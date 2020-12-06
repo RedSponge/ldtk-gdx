@@ -15,7 +15,7 @@ public class LDTKLayer {
     protected int randomSeed;
 
     public LDTKLayer(JsonValue value) {
-        this(value.getString("__identifier"), value.getInt("__cWid"), value.getInt("__cHei"), value.getInt("__gridSize"), value.getFloat("opacity"), value.getInt("levelId"), value.getInt("pxOffsetX"), value.getInt("pxOffsetY"), value.getInt("seed"));
+        this(value.getString("__identifier"), value.getInt("__cWid"), value.getInt("__cHei"), value.getInt("__gridSize"), value.getFloat("__opacity"), value.getInt("levelId"), value.getInt("pxOffsetX"), value.getInt("pxOffsetY"), value.getInt("seed"));
     }
 
     public LDTKLayer(String id, int width, int height, int gridSize, float opacity, int levelId, int pixelOffsetX, int pixelOffsetY, int randomSeed) {
