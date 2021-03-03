@@ -33,4 +33,13 @@ public class LDTKEntityLayer extends LDTKLayer {
         return entityMap.get(type);
     }
 
+    public <T> Array<T> getEntitiesConverted(String type, Class<T> convertTo) {
+        Array<LDTKEntity> entities = entityMap.get(type);
+        Array<T> output = new Array<>();
+        for (int i = 0; i < entities.size; i++) {
+            output.add(entities.get(i).as(convertTo));
+        }
+        return output;
+    }
+
 }

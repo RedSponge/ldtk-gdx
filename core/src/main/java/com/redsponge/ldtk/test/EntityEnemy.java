@@ -1,10 +1,12 @@
 package com.redsponge.ldtk.test;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.redsponge.ldtk.LDTKField;
+import com.redsponge.ldtk.LDTKInjected;
 import com.redsponge.ldtk.LDTKPositionField;
 
-public class EntityEnemy {
+public class EntityEnemy implements LDTKInjected {
 
     @LDTKPositionField
     private Vector2 pos;
@@ -30,6 +32,8 @@ public class EntityEnemy {
     @LDTKField("file_path")
     private String filePath;
 
+    private Texture texture;
+
     public EntityEnemy() {
     }
 
@@ -41,6 +45,38 @@ public class EntityEnemy {
         this.multilines = multilines;
         this.point = point;
         this.filePath = filePath;
+    }
+
+    public void update() {
+
+    }
+
+    public void render() {
+
+    }
+
+    @Override
+    public void preInjection() {
+
+    }
+
+    @Override
+    public void postInjection() {
+        String path;
+        switch (type) {
+            case Zombie:
+                path = "zombie.png";
+                break;
+            case Skeleton:
+                path = "skeleton.png";
+                break;
+            case Husk:
+                path = "husk.png";
+                break;
+            default:
+                throw new RuntimeException("Unknown type " + type);
+        }
+
     }
 
     @Override

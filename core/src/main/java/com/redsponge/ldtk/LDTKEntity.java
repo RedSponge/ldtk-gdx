@@ -9,12 +9,27 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import java.util.HashMap;
 
+/**
+ * Represents an LDTK map entity
+ */
 public class LDTKEntity {
 
+    /**
+     * The enemy's type
+     */
     private final String id;
+
+    /**
+     * Position (in world-coordinates)
+     */
     private final int x, y;
     private final HashMap<String, Object> values;
 
+    /**
+     * @param value - The JSON value to parse
+     * @param types - The type-provider to use
+     * @param layer - The entity's containing layer
+     */
     public LDTKEntity(JsonValue value, LDTKTypes types, LDTKLayer layer) {
         values = new HashMap<>();
 
@@ -30,23 +45,51 @@ public class LDTKEntity {
 
     private void parseField(JsonValue jsonValue, LDTKTypes types) {
         String valueName = jsonValue.getString("__identifier");
-        values.put(valueName, types.convert(jsonValue));
+        try {
+            values.put(valueName, types.convert(jsonValue));
+        } catch (LDTKException e) {
+            throw new LDTKException("Could not convert field `" + valueName + "` for entity `" + id + "`!", e);
+        }
     }
 
+    /**
+     * @return The LDTK entity identifier (entity name)
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @return X in world coordinates
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @return Y in world coordinates
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Query an entity field and returns it. <i>if many fields are needed, perhaps {@link LDTKEntity#as(Class)} should be used instead</i>
+     * @param name The name of the field
+     * @param <T> The field type
+     * @return The queried field, cast into the correct type
+     * @throws LDTKException if the field doesn't exist or couldn't be cast
+     */
+    @SuppressWarnings("unchecked")
     public <T> T get(String name) {
-        return (T) values.get(name);
+        if(!values.containsKey(name)) {
+            throw new LDTKException("Entity of type `" + id + "` does not contain a field named `" + name + "`");
+        }
+        try {
+            return (T) values.get(name);
+        } catch (ClassCastException e) {
+            throw new LDTKException("Could not cast field `" + name + "` to given type!", e);
+        }
     }
 
     /**
@@ -60,6 +103,11 @@ public class LDTKEntity {
     public <T> T as(Class<T> type) {
         try {
             T instance = ClassReflection.newInstance(type);
+
+            if(instance instanceof LDTKInjected) {
+                ((LDTKInjected) instance).preInjection();
+            }
+
             for (Field declaredField : ClassReflection.getDeclaredFields(type)) {
                 if (declaredField.isAnnotationPresent(LDTKField.class)) {
                     String entityFieldName = declaredField.getDeclaredAnnotation(LDTKField.class).getAnnotation(LDTKField.class).value();
@@ -75,6 +123,11 @@ public class LDTKEntity {
                     declaredField.set(instance, vec);
                 }
             }
+
+            if(instance instanceof LDTKInjected) {
+                ((LDTKInjected) instance).postInjection();
+            }
+
             return instance;
         } catch (ReflectionException e) {
             throw new LDTKException(e);

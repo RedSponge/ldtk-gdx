@@ -7,13 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.redsponge.ldtk.LDTKEntity;
-import com.redsponge.ldtk.LDTKEntityLayer;
-import com.redsponge.ldtk.LDTKTileLayer;
-import com.redsponge.ldtk.LDTKTypes;
+import com.redsponge.ldtk.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class LDTKGdx extends ApplicationAdapter {
@@ -25,9 +23,11 @@ public class LDTKGdx extends ApplicationAdapter {
     private TextureRegion region;
     private LDTKEntity entity;
 
-    private EntityEnemy[] enemies;
+    private Array<EntityEnemy> enemies;
 
     private Texture zombie, skeleton, husk;
+
+    private LDTKLevel level;
 
     @Override
     public void create() {
@@ -35,20 +35,16 @@ public class LDTKGdx extends ApplicationAdapter {
         viewport = new FitViewport(640/2, 360/2);
         LDTKTypes types = new LDTKTypes();
         types.addEnum("EnemyType", EnemyType.class);
+
         JsonValue root = new JsonReader().parse(Gdx.files.internal("AutoLayers_4_Advanced.ldtk"));
-        tileLayer = new LDTKTileLayer(root.get("levels").get(0).get("layerInstances").get(1), true);
-        entityLayer = new LDTKEntityLayer(root.get("levels").get(0).get("layerInstances").get(2), types);
-
-        enemies = new EntityEnemy[entityLayer.getEntitiesOfType("Enemy").size];
-        for (int i = 0; i < entityLayer.getEntitiesOfType("Enemy").size; i++) {
-            enemies[i] = entityLayer.getEntitiesOfType("Enemy").get(i).as(EntityEnemy.class);
-        }
-
+        level = new LDTKLevel(root.get("levels").get(0), types);
+//        tileLayer = new LDTKTileLayer(root.get("levels").get(0).get("layerInstances").get(0), false);
+        enemies = level.getEntityLayers().first().getEntitiesConverted("Enemy", EntityEnemy.class);
         zombie = new Texture("zombie.png");
         skeleton = new Texture("skeleton.png");
         husk = new Texture("husk.png");
 
-        region = new TextureRegion(tileLayer.getTilemapTexture(), 16, 152, 8, 8);
+//        region = new TextureRegion(tileLayer.getTilemapTexture(), 16, 152, 8, 8);
     }
 
     @Override
@@ -62,7 +58,7 @@ public class LDTKGdx extends ApplicationAdapter {
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
-        tileLayer.render(batch);
+        level.render(batch);
         for (EntityEnemy enemy : enemies) {
             Texture tex;
             switch (enemy.getType()) {
@@ -101,7 +97,10 @@ public class LDTKGdx extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        tileLayer.dispose();
+        zombie.dispose();
+        skeleton.dispose();
+        husk.dispose();
+        level.dispose();
     }
 
     @Override
