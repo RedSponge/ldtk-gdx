@@ -1,4 +1,4 @@
-package com.redsponge.ldtk.test;
+package com.redsponge.ldtk;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.redsponge.ldtk.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class LDTKGdx extends ApplicationAdapter {
@@ -23,7 +22,7 @@ public class LDTKGdx extends ApplicationAdapter {
     private TextureRegion region;
     private LDTKEntity entity;
 
-    private Array<EntityEnemy> enemies;
+//    private Array<EntityEnemy> enemies;
 
     private Texture zombie, skeleton, husk;
 
@@ -34,12 +33,12 @@ public class LDTKGdx extends ApplicationAdapter {
         batch = new SpriteBatch();
         viewport = new FitViewport(640/2, 360/2);
         LDTKTypes types = new LDTKTypes();
-        types.addEnum("EnemyType", EnemyType.class);
+//        types.addEnum("EnemyType", EnemyType.class);
 
         JsonValue root = new JsonReader().parse(Gdx.files.internal("AutoLayers_4_Advanced.ldtk"));
         level = new LDTKLevel(root.get("levels").get(0), types);
 //        tileLayer = new LDTKTileLayer(root.get("levels").get(0).get("layerInstances").get(0), false);
-        enemies = level.getEntityLayers().first().getEntitiesConverted("Enemy", EntityEnemy.class);
+//        enemies = level.getEntityLayers().first().getEntitiesConverted("Enemy", EntityEnemy.class);
         zombie = new Texture("zombie.png");
         skeleton = new Texture("skeleton.png");
         husk = new Texture("husk.png");
@@ -59,23 +58,23 @@ public class LDTKGdx extends ApplicationAdapter {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         level.render(batch);
-        for (EntityEnemy enemy : enemies) {
-            Texture tex;
-            switch (enemy.getType()) {
-                case Zombie:
-                    tex = zombie;
-                    break;
-                case Skeleton:
-                    tex = skeleton;
-                    break;
-                case Husk:
-                    tex = husk;
-                    break;
-                default:
-                    continue;
-            }
-            batch.draw(tex, enemy.getPos().x, enemy.getPos().y, 16, 16);
-        }
+//        for (EntityEnemy enemy : enemies) {
+//            Texture tex;
+//            switch (enemy.getType()) {
+//                case Zombie:
+//                    tex = zombie;
+//                    break;
+//                case Skeleton:
+//                    tex = skeleton;
+//                    break;
+//                case Husk:
+//                    tex = husk;
+//                    break;
+//                default:
+//                    continue;
+//            }
+//            batch.draw(tex, enemy.getPos().x, enemy.getPos().y, 16, 16);
+//        }
         batch.end();
     }
 
