@@ -1,0 +1,33 @@
+modifyPom {
+    project {
+        name 'LDTKGdx'
+        description 'An LDTK parser for LibGDX.'
+        url 'https://github.com/RedSponge/ldtk-gdx'
+        inceptionYear '2021'
+
+        scm {
+            url 'https://github.com/RedSponge/ldtk-gdx'
+            connection 'scm:https://RedSponge@github.com/RedSponge/ldtk-gdx.git'
+            developerConnection 'scm:git://github.com/RedSponge/ldtk-gdx.git'
+        }
+
+        licenses {
+            license {
+                name 'Apache Public License'
+                url 'https://www.apache.org/licenses/LICENSE-2.0.html'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'redsponge'
+                name 'RedSponge'
+            }
+        }
+    }
+}
+
+nexusStaging {
+    packageGroup = 'com.redsponge'
+}
