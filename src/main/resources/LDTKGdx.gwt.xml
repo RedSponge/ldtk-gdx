@@ -8,4 +8,6 @@
   -->
 <module>
     <source path="com/redsponge/ldtkgdx" />
+
+    <extend-configuration-property name="gdx.reflect.include" value="com.redsponge.ldtkgdx.annotations" />
 </module>

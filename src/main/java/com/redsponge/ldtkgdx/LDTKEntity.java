@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
+import com.redsponge.ldtkgdx.annotations.LDTKField;
+import com.redsponge.ldtkgdx.annotations.LDTKPositionField;
 
 import java.util.HashMap;
 
