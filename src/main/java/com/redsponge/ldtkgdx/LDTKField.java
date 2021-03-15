@@ -1,4 +1,4 @@
-package com.redsponge.ldtkgdx.annotations;
+package com.redsponge.ldtkgdx;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
