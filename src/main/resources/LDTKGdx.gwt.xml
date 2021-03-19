@@ -9,4 +9,6 @@
 <module>
     <source path="com/redsponge/ldtkgdx" />
     <extend-configuration-property name="gdx.reflect.include" value="com.redsponge.ldtkgdx" />
+    <extend-configuration-property name="gdx.reflect.include" value="com.redsponge.ldtkgdx.LDTKPositionField" />
+    <extend-configuration-property name="gdx.reflect.include" value="com.redsponge.ldtkgdx.LDTKField" />
 </module>
