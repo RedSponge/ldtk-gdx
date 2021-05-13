@@ -21,6 +21,7 @@ public class LDTKGdx extends ApplicationAdapter {
     private LDTKEntityLayer entityLayer;
     private TextureRegion region;
     private LDTKEntity entity;
+    private LDTKMap map;
 
 //    private Array<EntityEnemy> enemies;
 
@@ -35,8 +36,7 @@ public class LDTKGdx extends ApplicationAdapter {
         LDTKTypes types = new LDTKTypes();
 //        types.addEnum("EnemyType", EnemyType.class);
 
-        JsonValue root = new JsonReader().parse(Gdx.files.internal("AutoLayers_4_Advanced.ldtk"));
-        level = new LDTKLevel(root.get("levels").get(0), types);
+        map = new LDTKMap("AutoLayers_5_OptionalRules.ldtk", types);
 //        tileLayer = new LDTKTileLayer(root.get("levels").get(0).get("layerInstances").get(0), false);
 //        enemies = level.getEntityLayers().first().getEntitiesConverted("Enemy", EntityEnemy.class);
         zombie = new Texture("zombie.png");
@@ -57,7 +57,9 @@ public class LDTKGdx extends ApplicationAdapter {
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
-        level.render(batch);
+        for (LDTKLevel mapLevel : map.getLevels()) {
+            mapLevel.render(batch);
+        }
 //        for (EntityEnemy enemy : enemies) {
 //            Texture tex;
 //            switch (enemy.getType()) {

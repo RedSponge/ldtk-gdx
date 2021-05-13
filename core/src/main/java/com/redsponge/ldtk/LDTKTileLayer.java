@@ -31,8 +31,12 @@ public class LDTKTileLayer extends LDTKLayer implements Disposable {
     }
 
     public void render(SpriteBatch batch) {
+        render(batch, 0, 0);
+    }
+
+    public void render(SpriteBatch batch, float offsetX, float offsetY) {
         for (LDTKTile region : regions) {
-            batch.draw(region.getRegion(), region.getX(), region.getY());
+            batch.draw(region.getRegion(), region.getX() + offsetX, region.getY() + offsetY);
         }
     }
 

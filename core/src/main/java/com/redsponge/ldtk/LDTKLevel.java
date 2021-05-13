@@ -13,22 +13,26 @@ public class LDTKLevel {
     public static final String LAYER_TYPE_INTGRID = "IntGrid";
     public static final String LAYER_TYPE_ENTITY = "Entities";
 
-    private String identifier;
-    private int uid;
-    private int width;
-    private int height;
-    private Array<LDTKLayer> layers;
+    private final String identifier;
+    private final int uid;
+    private int x;
+    private int y;
+    private final int width;
+    private final int height;
+    private final Array<LDTKLayer> layers;
 
-    private Array<LDTKEntityLayer> entityLayers;
-    private Array<LDTKTileLayer> tileLayers;
-    private HashMap<String, LDTKLayer> layersByName;
+    private final Array<LDTKEntityLayer> entityLayers;
+    private final Array<LDTKTileLayer> tileLayers;
+    private final HashMap<String, LDTKLayer> layersByName;
 
-    private Color backgroundColor;
+    private final Color backgroundColor;
 
     public LDTKLevel(JsonValue root, LDTKTypes types) {
         identifier = root.getString("identifier");
         uid = root.getInt("uid");
         backgroundColor = Color.valueOf(root.getString("__bgColor"));
+        x = root.getInt("worldX");
+        y = root.getInt("worldY");
         width = root.getInt("pxWid");
         height = root.getInt("pxHei");
 
@@ -71,7 +75,7 @@ public class LDTKLevel {
 
     public void render(SpriteBatch batch) {
         for (int i = 0; i < tileLayers.size; i++) {
-            tileLayers.get(i).render(batch);
+            tileLayers.get(i).render(batch, x, y);
         }
     }
 
@@ -108,6 +112,10 @@ public class LDTKLevel {
 
     public Array<LDTKTileLayer> getTileLayers() {
         return tileLayers;
+    }
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
     }
 
     public void dispose() {
