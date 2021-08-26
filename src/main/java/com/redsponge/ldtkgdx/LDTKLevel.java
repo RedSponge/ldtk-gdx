@@ -15,6 +15,8 @@ public class LDTKLevel {
 
     private String identifier;
     private int uid;
+    private int x;
+    private int y;
     private int width;
     private int height;
     private Array<LDTKLayer> layers;
@@ -23,18 +25,25 @@ public class LDTKLevel {
     private Array<LDTKTileLayer> tileLayers;
     private HashMap<String, LDTKLayer> layersByName;
 
+    private LDTKMap mapIn;
+
     private Color backgroundColor;
+    private LDTKNeighbours neighbours;
 
-    public LDTKLevel(JsonValue root, LDTKTypes types) {
-        identifier = root.getString("identifier");
-        uid = root.getInt("uid");
-        backgroundColor = Color.valueOf(root.getString("__bgColor"));
-        width = root.getInt("pxWid");
-        height = root.getInt("pxHei");
+    public LDTKLevel(JsonValue root, LDTKTypes types, LDTKMap mapIn) {
+        this.identifier = root.getString("identifier");
+        this.uid = root.getInt("uid");
+        this.backgroundColor = Color.valueOf(root.getString("__bgColor"));
+        this.x = root.getInt("worldX");
+        this.y = root.getInt("worldY");
+        this.width = root.getInt("pxWid");
+        this.height = root.getInt("pxHei");
+        this.mapIn = mapIn;
 
-        layers = new Array<>();
-        entityLayers = new Array<>();
-        tileLayers = new Array<>();
+        this.layers = new Array<>();
+        this.entityLayers = new Array<>();
+        this.tileLayers = new Array<>();
+        this.neighbours = new LDTKNeighbours();
 
         layersByName = new HashMap<>();
 
@@ -43,6 +52,15 @@ public class LDTKLevel {
             parseLayer(layersJson.get(i), types);
         }
 
+        parseNeighbours(root.get("__neighbours"));
+
+    }
+
+    private void parseNeighbours(JsonValue neighboursJson) {
+        for (int i = 0; i < neighboursJson.size; i++) {
+            JsonValue neighbourJson = neighboursJson.get(i);
+            neighbours.add(neighbourJson.getInt("levelUid"), neighbourJson.getString("dir").charAt(0));
+        }
     }
 
     private void parseLayer(JsonValue layerJson, LDTKTypes types) {
@@ -71,7 +89,7 @@ public class LDTKLevel {
 
     public void render(SpriteBatch batch) {
         for (int i = 0; i < tileLayers.size; i++) {
-            tileLayers.get(i).render(batch);
+            tileLayers.get(i).render(batch, getX(), getFlippedY());
         }
     }
 
@@ -98,6 +116,18 @@ public class LDTKLevel {
         return height;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getFlippedY() {
+        return mapIn.getMaxHeight() - (y + height);
+    }
+
     public Array<LDTKEntityLayer> getEntityLayers() {
         return entityLayers;
     }
@@ -117,5 +147,9 @@ public class LDTKLevel {
         tileLayers.clear();
         entityLayers.clear();
         layers.clear();
+    }
+
+    public LDTKNeighbours getNeighbours() {
+        return neighbours;
     }
 }
