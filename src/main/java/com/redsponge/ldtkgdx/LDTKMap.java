@@ -1,9 +1,12 @@
 package com.redsponge.ldtkgdx;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.HashMap;
+import java.util.logging.FileHandler;
 
 public class LDTKMap {
 
@@ -18,6 +21,11 @@ public class LDTKMap {
         this.levelsById = new IntMap<>();
         this.levelNamesToIds = new HashMap<>();
         this.types = types;
+    }
+
+    public LDTKMap(LDTKTypes types, FileHandle file) {
+        this(types);
+        load(new JsonReader().parse(file));
     }
 
     public void load(JsonValue root) {

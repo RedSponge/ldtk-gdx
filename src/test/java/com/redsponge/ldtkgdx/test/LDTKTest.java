@@ -33,36 +33,14 @@ public class LDTKTest extends ApplicationAdapter {
 
     @Override
     public void create() {
-
-        Gdx.app.setLogLevel(Logger.DEBUG);
-        Gdx.app.log("Hello!", "TEST!");
-        for (Field field : ClassReflection.getDeclaredFields(Enemy.class)) {
-            Gdx.app.log("Hello!", "For field "+ field.getName() + " the annotations are " + Arrays.toString(field.getDeclaredAnnotations()));
-        }
-
         batch = new SpriteBatch();
-        JsonValue mapJson = new JsonReader().parse(Gdx.files.internal("world-test.ldtk").readString());
 
         types = new LDTKTypes();
-        map = new LDTKMap(types);
-        map.load(mapJson);
+        map = new LDTKMap(types, Gdx.files.internal("world-test.ldtk"));
 
         viewport = new FitViewport(320, 180);
 
         player = new Player();
-
-//        types.addEnum("EnemyType", EnemyType.class);
-
-//        try {
-//            Enemy e = ClassReflection.newInstance(Enemy.class);
-//            System.out.println(e);
-//        } catch (ReflectionException reflectionException) {
-//            reflectionException.printStackTrace();
-//        }
-
-//        enemies = level.getEntityLayers().get(0).getEntitiesConverted("Enemy", Enemy.class);
-
-//        zombieTex = new Texture("zombie.png");
     }
 
     @Override
@@ -92,10 +70,6 @@ public class LDTKTest extends ApplicationAdapter {
         System.out.println(player.getPosition());
 
         player.render(batch);
-//        enemies.forEach(e -> {
-//            Gdx.app.log("Heya", e.toString());
-//            batch.draw(zombieTex, e.getPos().x, e.getPos().y);
-//        });
         batch.end();
 
     }
@@ -124,7 +98,6 @@ public class LDTKTest extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         map.dispose();
-//        zombieTex.dispose();
     }
 
     @Override
