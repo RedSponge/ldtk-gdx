@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.HashMap;
-import java.util.logging.FileHandler;
 
 public class LDTKMap {
 

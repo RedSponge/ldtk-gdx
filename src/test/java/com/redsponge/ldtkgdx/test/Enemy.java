@@ -9,8 +9,11 @@ public class Enemy {
     @LDTKPositionField
     private Vector2 pos;
 
-    @LDTKField("enemyType")
+    @LDTKField("Type")
     private EnemyType type;
+
+    @LDTKField("Health")
+    private int hp;
 
     public Enemy() {
     }
@@ -23,7 +26,8 @@ public class Enemy {
     public String toString() {
         return "Enemy{" +
                 "pos=" + pos +
-                ", type=" + type +
+                ", type='" + type + '\'' +
+                ", hp=" + hp +
                 '}';
     }
 }

@@ -9,10 +9,7 @@ import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.redsponge.ldtkgdx.LDTKLevel;
-import com.redsponge.ldtkgdx.LDTKMap;
-import com.redsponge.ldtkgdx.LDTKNeighbours;
-import com.redsponge.ldtkgdx.LDTKTypes;
+import com.redsponge.ldtkgdx.*;
 
 import java.util.Arrays;
 
@@ -36,11 +33,21 @@ public class LDTKTest extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         types = new LDTKTypes();
+        types.addEnum("EnemyType", EnemyType.class);
         map = new LDTKMap(types, Gdx.files.internal("world-test.ldtk"));
 
         viewport = new FitViewport(320, 180);
 
         player = new Player();
+
+        LDTKLevel level_0 = map.getLevel("Level_0");
+        Array<LDTKEntity> enemies = ((LDTKEntityLayer)level_0.getLayerByName("RoomChanges")).getEntitiesOfType("Enemy");
+        LDTKEntity ldtkEntity = enemies.get(0);
+
+        System.out.println(((LDTKEntityLayer)level_0.getLayerByName("RoomChanges")).getEntitiesConverted("Enemy", Enemy.class));
+
+        EnemyType entityType = ldtkEntity.get("Type");
+        System.out.println(entityType);
     }
 
     @Override

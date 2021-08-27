@@ -9,7 +9,7 @@
 		"url": "https://ldtk.io"
 	},
 	"jsonVersion": "0.9.3",
-	"nextUid": 37,
+	"nextUid": 42,
 	"worldLayout": "GridVania",
 	"worldGridWidth": 256,
 	"worldGridHeight": 256,
@@ -445,18 +445,18 @@
 		}
 	], "entities": [
 		{
-			"identifier": "LevelChange",
-			"uid": 24,
+			"identifier": "Enemy",
+			"uid": 37,
 			"tags": [],
 			"width": 16,
 			"height": 16,
-			"resizableX": true,
-			"resizableY": true,
+			"resizableX": false,
+			"resizableY": false,
 			"keepAspectRatio": false,
 			"fillOpacity": 1,
 			"lineOpacity": 1,
 			"hollow": false,
-			"color": "#94D9B3",
+			"color": "#FF0000",
 			"renderMode": "Rectangle",
 			"showName": true,
 			"tilesetId": null,
@@ -469,15 +469,15 @@
 			"pivotY": 1,
 			"fieldDefs": [
 				{
-					"identifier": "ChangeTo",
-					"__type": "String",
-					"uid": 25,
-					"type": "F_String",
+					"identifier": "Type",
+					"__type": "LocalEnum.EnemyType",
+					"uid": 41,
+					"type": { "id": "F_Enum", "params": [40] },
 					"isArray": false,
 					"canBeNull": false,
 					"arrayMinLength": null,
 					"arrayMaxLength": null,
-					"editorDisplayMode": "ValueOnly",
+					"editorDisplayMode": "NameAndValue",
 					"editorDisplayPos": "Above",
 					"editorAlwaysShow": false,
 					"editorCutLongValues": true,
@@ -487,6 +487,26 @@
 					"acceptFileTypes": null,
 					"defaultOverride": null,
 					"textLanguageMode": null
+				},
+				{
+					"identifier": "Health",
+					"__type": "Int",
+					"uid": 39,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Int", "params": [100] },
+					"textLanguageMode": null
 				}
 			]
 		}
@@ -494,7 +514,7 @@
 		{
 			"__cWid": 8,
 			"__cHei": 8,
-			"identifier": "World_test_tiles2",
+			"identifier": "World_test_tiles",
 			"uid": 1,
 			"relPath": "world-test-tiles.png",
 			"pxWid": 128,
@@ -511,7 +531,11 @@
 				"averageColors": "00000000000000000000000000000000f555f555f5550000f555f5550000000000000000000000000000f44500000000f555f555f55500000000f44500000000f445f445f44500000000000000000000f445f445f445000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 			}
 		}
-	], "enums": [], "externalEnums": [], "levelFields": [] },
+	], "enums": [{ "identifier": "EnemyType", "uid": 40, "values": [
+		{ "id": "Zombie", "tileId": null, "color": 0, "__tileSrcRect": null },
+		{ "id": "Skeleton", "tileId": null, "color": 0, "__tileSrcRect": null },
+		{ "id": "Husk", "tileId": null, "color": 0, "__tileSrcRect": null }
+	], "iconTilesetUid": 1, "externalRelPath": null, "externalFileChecksum": null }], "externalEnums": [], "levelFields": [] },
 	"levels": [
 		{
 			"identifier": "Level_0",
@@ -554,7 +578,31 @@
 					"seed": 4544242,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Enemy",
+							"__grid": [7,4],
+							"__pivot": [0,1],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 37,
+							"px": [112,80],
+							"fieldInstances": [
+								{ "__identifier": "Health", "__value": 100, "__type": "Int", "defUid": 39, "realEditorValues": [] },
+								{
+									"__identifier": "Type",
+									"__value": "Skeleton",
+									"__type": "LocalEnum.EnemyType",
+									"defUid": 41,
+									"realEditorValues": [{
+										"id": "V_String",
+										"params": ["Skeleton"]
+									}]
+								}
+							]
+						}
+					]
 				},
 				{
 					"__identifier": "WorldGrid",
