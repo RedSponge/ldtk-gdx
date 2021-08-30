@@ -53,7 +53,7 @@ Once loaded, you can access the different levels by name or uid:
 
 ```java
 LDTKLevel myLevel = map.getLevel("Level_0");
-LDTKLevel myOtherLevel = map.getLevel("Level_123");
+LDTKLevel myOtherLevel = map.getLevel(123);
 ```
 
 #### Drawing a level
