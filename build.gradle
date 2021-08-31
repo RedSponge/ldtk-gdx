@@ -4,16 +4,10 @@ buildscript {
         maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
     }
-    dependencies {
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
-    }
 }
 
 apply plugin: 'java-library'
-apply plugin: 'com.bmuschko.nexus'
-apply plugin: 'io.codearte.nexus-staging'
-apply from: 'publish.gradle'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
 
@@ -21,10 +15,37 @@ def projectName = 'LDTKGdx'
 version '0.0.1-SNAPSHOT'
 group 'com.redsponge'
 
-def gdxVersion = '1.9.14'
+def gdxVersion = '1.10.0'
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+publishing {
+    publications {
+        ldtkGdx(MavenPublication) {
+            pom {
+                name = "ldtk-gdx"
+                description = "Libgdx library which allows for LDTK level integration."
+                url = "https://github.com/RedSponge/ldtk-gdx"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+            }
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+}
 
 //task sourcesJar(type: Jar, dependsOn: classes) {
 //    classifier = 'sources'
