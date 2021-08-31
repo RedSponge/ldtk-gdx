@@ -13,7 +13,7 @@ This is a library which aims to allow easy integration of [LDTK](https://ldtk.io
 ###### Core dependency:
 
 ```groovy
-implementation 'com.github.RedSponge:ldtk-gdx:v0.1.1'
+implementation 'com.github.RedSponge:ldtk-gdx:v0.2'
 ```
 
 ###### GWT Dependency:
@@ -21,13 +21,13 @@ implementation 'com.github.RedSponge:ldtk-gdx:v0.1.1'
 In html dependencies:
 
 ```groovy
-implementation "com.github.RedSponge:ldtk-gdx:v0.1.1:sources"
+implementation "com.github.RedSponge:ldtk-gdx:v0.2:sources"
 ```
 
 In `GdxDefinitions.gwt.xml`:
 
 ```xml
-<inherits name="LDTKGdx"/>
+<inherits name="com.redsponge.LDTKGdx"/>
 ```
 
 ### Writing some code
@@ -121,11 +121,12 @@ for(LDTKEntity enemy : enemies) {
 
 #### The cool Reflection-ey way
 
-**Unfortunately, this doesn't work with GWT (html), because annotations and reflection in GWT are confusing.**
+**(Thanks to [Lyze](https://github.com/lyze237/) for making this works with GWT (html).**
 
 Instead of using the generic `LDTKEntity` class, you can make your own class for each defined entity, and access the fields that way:
 
 ```java
+package com.redsponge.ldtktest;
 // Example enemy class
 public class LoadedEnemy
 {
@@ -150,11 +151,23 @@ public class LoadedEnemy
 
 Then, to get an array of the enemies from before, but converted to this new, cool class, just use the `getEntitiesConverted` method on the entity layer:
 
+
 ```java
 Array<LoadedEnemy> enemies = entityLayer.getEntitiesConverted("Enemy", LoadedEnemy.class);
 ```
 
+
 **Important:** The conversion is mildly expensive (All objects need to be constructed in the given type), and so the result should be cached.
+
+##### For GWT projects:
+For each one of the classes which use the annotations, add a line in your `GdxDefinitions.gwt.xml` which looks like this:
+```xml
+    <extend-configuration-property name="gdx.reflect.include" value="path.to.your.Class" />
+```
+i.e.
+```xml
+    <extend-configuration-property name="gdx.reflect.include" value="com.redsponge.ldtktest.LoadedEnemy" />
+```
 
 ### Custom enums
 
@@ -190,7 +203,8 @@ This will return an `IntArray` containing the level ids of the neighbours. (Remi
 To get all neighbours around a level, regardless of direction, just use `NeighbourDirection.All`.
 
 
+## Acknowledgements
 
-## The End of the README
-
-So you've reached the end.. I don't really know what to put here
+ - [LDTK](https://ldtk.io/) by Sebastian Benard ("deepnight").
+ - Huge thanks to [Lyze237](https://github.com/lyze237/) for making GWT support work.
+ 
