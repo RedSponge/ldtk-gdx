@@ -121,7 +121,7 @@ for(LDTKEntity enemy : enemies) {
 
 #### The cool Reflection-ey way
 
-**(Thanks to [Lyze](https://github.com/lyze237/) for making this works with GWT (html).**
+**(Thanks to [Lyze](https://github.com/lyze237/) for making this work with GWT (html)).**
 
 Instead of using the generic `LDTKEntity` class, you can make your own class for each defined entity, and access the fields that way:
 
